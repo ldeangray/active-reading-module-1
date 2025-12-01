@@ -1,0 +1,868 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Active Reading – Module 1: Central Idea</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: linear-gradient(135deg, #fdfbfb 0%, #ebedee 100%);
+      color: #222;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .app {
+      width: 100%;
+      max-width: 900px;
+      margin: 20px;
+      background: #ffffff;
+      border-radius: 24px;
+      box-shadow: 0 18px 40px rgba(0,0,0,0.08);
+      overflow: hidden;
+      border: 3px solid #f9a8d4;
+    }
+    header {
+      padding: 16px 24px;
+      background: linear-gradient(135deg, #f97316 0%, #ec4899 50%, #6366f1 100%);
+      color: white;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    header h1 {
+      font-size: 1.2rem;
+      font-weight: 700;
+    }
+    header .tagline {
+      font-size: 0.85rem;
+      opacity: 0.9;
+    }
+    header .pill {
+      background: rgba(255,255,255,0.15);
+      padding: 6px 12px;
+      border-radius: 999px;
+      font-size: 0.75rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    main {
+      padding: 24px;
+    }
+
+    .screen {
+      display: none;
+      animation: fadeIn 0.3s ease-out;
+    }
+    .screen.active {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    h2 {
+      font-size: 1.4rem;
+      margin-bottom: 12px;
+    }
+
+    p {
+      line-height: 1.6;
+      margin-bottom: 8px;
+    }
+
+    .welcome-title {
+      font-size: 1.6rem;
+      margin-bottom: 8px;
+    }
+
+    .skill-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: #e0f2fe;
+      color: #0f172a;
+      padding: 8px 14px;
+      border-radius: 999px;
+      font-size: 0.85rem;
+      margin-bottom: 12px;
+    }
+
+    .anchor-card {
+      background: linear-gradient(135deg, #fef3c7 0%, #f9a8d4 40%, #bfdbfe 100%);
+      border-radius: 18px;
+      padding: 16px 18px;
+      margin: 12px 0 18px;
+      color: #111827;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+    }
+    .anchor-card h3 {
+      font-size: 1.1rem;
+      margin-bottom: 8px;
+    }
+    .anchor-card ol {
+      margin-left: 20px;
+      font-size: 0.95rem;
+    }
+    .anchor-card li {
+      margin-bottom: 4px;
+    }
+
+    .btn-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 18px;
+    }
+
+    button {
+      border: none;
+      cursor: pointer;
+      border-radius: 999px;
+      padding: 10px 18px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: transform 0.12s ease, box-shadow 0.12s ease, background 0.2s ease;
+    }
+    button:active {
+      transform: translateY(1px);
+      box-shadow: none;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
+      color: white;
+      box-shadow: 0 8px 20px rgba(22,163,74,0.4);
+    }
+    .btn-secondary {
+      background: #e5e7eb;
+      color: #111827;
+    }
+    .btn-outline {
+      background: white;
+      border-radius: 999px;
+      border: 1px solid #e5e7eb;
+      color: #111827;
+    }
+    .btn-small {
+      padding: 6px 12px;
+      font-size: 0.8rem;
+    }
+
+    .passage-box {
+      border-radius: 18px;
+      padding: 16px;
+      background: #f9fafb;
+      border: 1px solid #e5e7eb;
+      margin-bottom: 16px;
+      max-height: 260px;
+      overflow-y: auto;
+    }
+
+    .passage-title {
+      font-weight: 700;
+      font-size: 1rem;
+      margin-bottom: 8px;
+      color: #0f172a;
+    }
+
+    .highlighter-bar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 10px;
+      align-items: center;
+    }
+
+    .highlighter-label {
+      font-size: 0.8rem;
+      color: #4b5563;
+      margin-right: 4px;
+    }
+
+    .hl-btn {
+      border-radius: 999px;
+      padding: 6px 10px;
+      font-size: 0.8rem;
+      border: 1px solid transparent;
+    }
+    .hl-main {
+      background: #fef9c3;
+      border-color: #facc15;
+    }
+    .hl-evidence {
+      background: #dbeafe;
+      border-color: #3b82f6;
+    }
+    .hl-unknown {
+      background: #fce7f3;
+      border-color: #ec4899;
+    }
+    .hl-selected {
+      box-shadow: 0 0 0 2px rgba(15,23,42,0.2);
+    }
+
+    .word {
+      cursor: pointer;
+      padding: 1px 2px;
+      border-radius: 4px;
+      margin-right: 2px;
+      line-height: 1.9;
+      display: inline-block;
+    }
+    .highlight-main {
+      background: #fef08a;
+    }
+    .highlight-evidence {
+      background: #bfdbfe;
+    }
+    .highlight-unknown {
+      background: #f9a8d4;
+    }
+
+    .progress-strip {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.8rem;
+      margin-bottom: 12px;
+      color: #6b7280;
+    }
+
+    .progress-dots {
+      display: flex;
+      gap: 4px;
+      align-items: center;
+    }
+    .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 999px;
+      background: #e5e7eb;
+    }
+    .dot.active {
+      background: #34d399;
+    }
+
+    .question-card {
+      border-radius: 18px;
+      background: #eff6ff;
+      border: 1px solid #bfdbfe;
+      padding: 16px;
+    }
+    .question-text {
+      margin-bottom: 10px;
+      font-weight: 600;
+    }
+    .choices {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+    .choice-btn {
+      width: 100%;
+      justify-content: flex-start;
+      background: white;
+      border-radius: 12px;
+      border: 1px solid #e5e7eb;
+      padding: 8px 12px;
+      font-weight: 500;
+    }
+    .choice-btn.selected {
+      border-color: #6366f1;
+      box-shadow: 0 0 0 2px rgba(99,102,241,0.35);
+      background: #eef2ff;
+    }
+    .feedback {
+      font-size: 0.85rem;
+      margin-top: 4px;
+      min-height: 24px;
+    }
+    .feedback.correct {
+      color: #15803d;
+    }
+    .feedback.incorrect {
+      color: #b91c1c;
+    }
+
+    .score-chip {
+      display: inline-flex;
+      gap: 6px;
+      align-items: center;
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: #f1f5f9;
+      font-size: 0.8rem;
+      margin-left: 8px;
+    }
+
+    .results-box {
+      text-align: center;
+      padding: 16px;
+    }
+    .big-number {
+      font-size: 2.4rem;
+      font-weight: 800;
+      margin-bottom: 8px;
+      background: linear-gradient(135deg, #22c55e 0%, #0ea5e9 50%, #a855f7 100%);
+      -webkit-background-clip: text;
+      color: transparent;
+    }
+    .confetti {
+      font-size: 2rem;
+      margin-bottom: 8px;
+    }
+
+    @media (max-width: 640px) {
+      main {
+        padding: 18px;
+      }
+      header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 6px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <header>
+      <div>
+        <h1>Active Reading · Module 1</h1>
+        <div class="tagline">Central Idea · Immigration, Community & Voice</div>
+      </div>
+      <div class="pill">
+        ⭐ MAP R Practice
+      </div>
+    </header>
+
+    <main>
+      <!-- Welcome Screen -->
+      <section id="screen-welcome" class="screen active">
+        <div class="progress-strip">
+          <span>Step 1 of 4</span>
+          <div class="progress-dots">
+            <div class="dot active"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+          </div>
+        </div>
+        <div class="skill-chip">
+          📌 Today’s Skill: <strong>Finding the Central Idea</strong>
+        </div>
+        <div class="anchor-card">
+          <h3>What is the central idea?</h3>
+          <p style="margin-bottom:6px;">
+            The central idea is what the <strong>whole passage</strong> is mostly about – not just one detail or one paragraph.
+          </p>
+          <ol>
+            <li>Notice who or what is in the passage a lot.</li>
+            <li>Ask: What big problem, change, or message keeps coming up?</li>
+            <li>Ignore tiny details and examples.</li>
+            <li>Say it in <strong>one clear sentence</strong>.</li>
+          </ol>
+        </div>
+        <p style="margin-bottom:8px;">In this module, you’ll:</p>
+        <ul style="margin-left:18px; margin-bottom:16px; font-size:0.95rem;">
+          <li>Practice reading about students speaking up for immigrant families</li>
+          <li>Highlight the central idea and the evidence that proves it</li>
+          <li>Answer MAP-style questions and earn points ⭐</li>
+        </ul>
+        <div class="btn-row">
+          <button class="btn-primary" onclick="goToScreen('screen-ido')">
+            Let’s Start the Story 🚀
+          </button>
+        </div>
+      </section>
+
+      <!-- I DO Screen -->
+      <section id="screen-ido" class="screen">
+        <div class="progress-strip">
+          <span>Step 2 of 4 · I Do (Teacher Models)</span>
+          <div class="progress-dots">
+            <div class="dot active"></div>
+            <div class="dot active"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+          </div>
+        </div>
+        <h2>I Do: Watch how I mark the central idea 👀</h2>
+        <p style="font-size:0.9rem; color:#4b5563; margin-bottom:10px;">
+          Use the highlighter buttons. I’ll model how to mark the <strong>central idea</strong> and one key piece of <strong>evidence</strong>.
+        </p>
+
+        <div class="highlighter-bar">
+          <span class="highlighter-label">Highlighter:</span>
+          <button class="hl-btn hl-main hl-selected" id="btn-main-ido" onclick="setHighlighter('main', 'ido')">
+            🟡 Main Idea
+          </button>
+          <button class="hl-btn hl-evidence" id="btn-evid-ido" onclick="setHighlighter('evidence', 'ido')">
+            🔵 Evidence
+          </button>
+          <button class="hl-btn hl-unknown" id="btn-unk-ido" onclick="setHighlighter('unknown', 'ido')">
+            💗 New / Unknown Word
+          </button>
+          <button class="btn-small btn-outline" onclick="showModel('ido')">
+            Show Teacher Model ✨
+          </button>
+          <button class="btn-small btn-outline" onclick="clearHighlights('ido')">
+            Clear
+          </button>
+        </div>
+
+        <div id="passage-ido" class="passage-box">
+          <div class="passage-title">Building Bridges at Lincoln High</div>
+          <!-- paragraph 1 will be injected here -->
+        </div>
+
+        <div class="btn-row">
+          <button class="btn-secondary" onclick="goToScreen('screen-welcome')">⬅ Back</button>
+          <button class="btn-primary" onclick="goToScreen('screen-wedo')">We Do Together ➡</button>
+        </div>
+      </section>
+
+      <!-- WE DO Screen -->
+      <section id="screen-wedo" class="screen">
+        <div class="progress-strip">
+          <span>Step 3 of 4 · We Do (Try it together)</span>
+          <div class="progress-dots">
+            <div class="dot active"></div>
+            <div class="dot active"></div>
+            <div class="dot active"></div>
+            <div class="dot"></div>
+          </div>
+        </div>
+        <h2>We Do: Let’s highlight together 🧠+🧠</h2>
+        <p style="font-size:0.9rem; color:#4b5563; margin-bottom:10px;">
+          We’ll decide together what might be part of the central idea and what counts as strong evidence.
+        </p>
+
+        <div class="highlighter-bar">
+          <span class="highlighter-label">Highlighter:</span>
+          <button class="hl-btn hl-main hl-selected" id="btn-main-wedo" onclick="setHighlighter('main', 'wedo')">
+            🟡 Main Idea
+          </button>
+          <button class="hl-btn hl-evidence" id="btn-evid-wedo" onclick="setHighlighter('evidence', 'wedo')">
+            🔵 Evidence
+          </button>
+          <button class="hl-btn hl-unknown" id="btn-unk-wedo" onclick="setHighlighter('unknown', 'wedo')">
+            💗 New / Unknown Word
+          </button>
+          <button class="btn-small btn-outline" onclick="clearHighlights('wedo')">
+            Clear
+          </button>
+        </div>
+
+        <div id="passage-wedo" class="passage-box">
+          <!-- paragraph 2 injected -->
+        </div>
+
+        <div class="btn-row">
+          <button class="btn-secondary" onclick="goToScreen('screen-ido')">⬅ Back</button>
+          <button class="btn-primary" onclick="goToScreen('screen-youdoprep')">Now You Try ➡</button>
+        </div>
+      </section>
+
+      <!-- YOU DO – prep screen (little teaching blurb) -->
+      <section id="screen-youdoprep" class="screen">
+        <div class="progress-strip">
+          <span>Step 4 of 4 · You Do (Independent)</span>
+          <div class="progress-dots">
+            <div class="dot active"></div>
+            <div class="dot active"></div>
+            <div class="dot active"></div>
+            <div class="dot active"></div>
+          </div>
+        </div>
+        <h2>Quick Reminder: How to Find the Central Idea 🧩</h2>
+        <div class="anchor-card">
+          <h3>Use this game plan:</h3>
+          <ol>
+            <li>Ask: Who or what shows up the most?</li>
+            <li>Look for the main problem, change, or message.</li>
+            <li>Ignore small details (names, dates, side stories).</li>
+            <li>Say the big idea in one sentence that covers the whole passage.</li>
+          </ol>
+        </div>
+        <p style="margin-top:8px; margin-bottom:12px;">
+          Now you’ll highlight on your own and then answer questions.
+        </p>
+        <div class="btn-row">
+          <button class="btn-secondary" onclick="goToScreen('screen-wedo')">⬅ Back</button>
+          <button class="btn-primary" onclick="goToScreen('screen-youdo')">I’m Ready 💪</button>
+        </div>
+      </section>
+
+      <!-- YOU DO Screen -->
+      <section id="screen-youdo" class="screen">
+        <div class="progress-strip">
+          <span>You Do · Highlight, then answer questions</span>
+          <div class="score-chip">
+            ⭐ Score: <span id="score-display">0</span>
+          </div>
+        </div>
+        <h2>You Do: Your turn to mark the passage ✍️</h2>
+        <p style="font-size:0.9rem; color:#4b5563; margin-bottom:10px;">
+          1) Highlight the sentence that best shows the central idea (yellow).<br/>
+          2) Highlight one or two strong evidence phrases (blue).<br/>
+          3) Tap any new / confusing words (pink).
+        </p>
+
+        <div class="highlighter-bar">
+          <span class="highlighter-label">Highlighter:</span>
+          <button class="hl-btn hl-main hl-selected" id="btn-main-youdo" onclick="setHighlighter('main', 'youdo')">
+            🟡 Main Idea
+          </button>
+          <button class="hl-btn hl-evidence" id="btn-evid-youdo" onclick="setHighlighter('evidence', 'youdo')">
+            🔵 Evidence
+          </button>
+          <button class="hl-btn hl-unknown" id="btn-unk-youdo" onclick="setHighlighter('unknown', 'youdo')">
+            💗 New / Unknown Word
+          </button>
+          <button class="btn-small btn-outline" onclick="clearHighlights('youdo')">
+            Clear
+          </button>
+        </div>
+
+        <div id="passage-youdo" class="passage-box">
+          <!-- paragraph 3 injected -->
+        </div>
+
+        <div class="btn-row" style="margin-top:14px;">
+          <button class="btn-secondary" onclick="goToScreen('screen-youdoprep')">⬅ Back</button>
+          <button class="btn-primary" onclick="startQuestions()">Go to Questions ➡</button>
+        </div>
+      </section>
+
+      <!-- QUESTIONS Screen -->
+      <section id="screen-questions" class="screen">
+        <div class="progress-strip">
+          <span>Question <span id="q-number">1</span> of <span id="q-total">4</span></span>
+          <div class="score-chip">
+            ⭐ Score: <span id="score-display-2">0</span>
+          </div>
+        </div>
+        <div class="question-card">
+          <div id="q-text" class="question-text"></div>
+          <div id="q-choices" class="choices"></div>
+          <div id="q-feedback" class="feedback"></div>
+        </div>
+        <div class="btn-row" style="margin-top:16px;">
+          <button class="btn-secondary" onclick="backFromQuestion()">⬅ Back to Passage</button>
+          <button class="btn-primary" id="check-btn" onclick="checkAnswer()">Check Answer ✅</button>
+        </div>
+      </section>
+
+      <!-- RESULTS Screen -->
+      <section id="screen-results" class="screen">
+        <div class="results-box">
+          <div class="confetti">🎉🎉🎉</div>
+          <h2>Nice work, Reader!</h2>
+          <div class="big-number" id="results-score">3 / 4</div>
+          <p id="results-text" style="margin-bottom:12px;"></p>
+          <p style="font-size:0.9rem; color:#4b5563; margin-bottom:16px;">
+            Remember: the MAP test is just a snapshot. Every time you practice, you train your brain to read with more power. 💪
+          </p>
+          <div class="btn-row" style="justify-content:center;">
+            <button class="btn-primary" onclick="restartModule()">Try Again 🔁</button>
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <script>
+    // ---------- PASSAGE TEXT (3 PARAGRAPHS) ----------
+    var p1 = "On a rainy Thursday in October, students at Lincoln High gathered in the cafeteria, not for lunch, but for a meeting. The flyers on the walls read, “Building Bridges: Student Voices for Newcomer Families.” In the front row sat Maya, whose dad came from El Salvador, and Daniel, whose parents had been stopped by immigration officers the year before. Many students had relatives who were worried about new immigration policies, and everyone seemed tired of whispering about it in the hallways.";
+    var p2 = "The idea for the meeting started in English class, when their teacher showed an article about families separated at the border. Some students had never heard about it. Others, like Maya, knew the fear up close. During a class discussion, Daniel admitted that he stayed quiet when his friends made jokes about “ICE coming to get people” because he did not know how to respond. Their teacher challenged them to use what they were learning about central idea and evidence to understand real-world texts about immigration—and then decide how they wanted to act.";
+    var p3 = "Over the next week, the students read articles, watched interviews, and even analyzed speeches from local leaders. They highlighted key sentences that showed how immigration policies affected real families in their city. Then the group designed posters for a school-wide “Know Your Rights” night, where lawyers and community organizers would answer questions. As they worked, Maya noticed something important: even students who usually stayed silent were helping translate, draw, and share ideas. The project was no longer just about fear. It had become about students using their voices to protect and support their community.";
+
+    // ---------- HIGHLIGHTER STATE ----------
+    var currentHighlighter = {
+      ido: 'main',
+      wedo: 'main',
+      youdo: 'main'
+    };
+
+    // to store span IDs for model highlights
+    var modelIdsIdo = [];
+
+    // ---------- SCREEN NAV ----------
+    function goToScreen(id) {
+      var screens = document.querySelectorAll('.screen');
+      screens.forEach(function(s) { s.classList.remove('active'); });
+      document.getElementById(id).classList.add('active');
+      // sync score display on questions screen
+      document.getElementById('score-display-2').textContent = totalPoints;
+    }
+
+    // ---------- PASSAGE RENDERING ----------
+    function renderParagraph(containerId, text, sectionKey) {
+      var container = document.getElementById(containerId);
+      container.innerHTML = '<div class="passage-title">Building Bridges at Lincoln High</div>';
+      var paraEl = document.createElement('p');
+      var words = text.split(' ');
+      for (var i = 0; i < words.length; i++) {
+        var span = document.createElement('span');
+        span.textContent = words[i].replace(/\s+/g, '') + ' ';
+        span.className = 'word';
+        span.dataset.section = sectionKey;
+        span.dataset.index = i;
+        span.onclick = function() { toggleHighlight(this); };
+        paraEl.appendChild(span);
+      }
+      container.appendChild(paraEl);
+    }
+
+    function toggleHighlight(span) {
+      var section = span.dataset.section;
+      var mode = currentHighlighter[section];
+
+      // remove any existing highlight classes
+      span.classList.remove('highlight-main', 'highlight-evidence', 'highlight-unknown');
+
+      if (mode === 'main') {
+        span.classList.add('highlight-main');
+      } else if (mode === 'evidence') {
+        span.classList.add('highlight-evidence');
+      } else if (mode === 'unknown') {
+        span.classList.add('highlight-unknown');
+      }
+    }
+
+    function clearHighlights(sectionKey) {
+      var spans = document.querySelectorAll('.word[data-section="' + sectionKey + '"]');
+      spans.forEach(function(s) {
+        s.classList.remove('highlight-main', 'highlight-evidence', 'highlight-unknown');
+      });
+    }
+
+    function setHighlighter(mode, sectionKey) {
+      currentHighlighter[sectionKey] = mode;
+      // update button visual state
+      var ids = ['ido','wedo','youdo'];
+      ids.forEach(function(sec) {
+        if (sec === sectionKey) {
+          document.getElementById('btn-main-' + sec).classList.remove('hl-selected');
+          document.getElementById('btn-evid-' + sec).classList.remove('hl-selected');
+          document.getElementById('btn-unk-' + sec).classList.remove('hl-selected');
+          if (mode === 'main') {
+            document.getElementById('btn-main-' + sec).classList.add('hl-selected');
+          } else if (mode === 'evidence') {
+            document.getElementById('btn-evid-' + sec).classList.add('hl-selected');
+          } else if (mode === 'unknown') {
+            document.getElementById('btn-unk-' + sec).classList.add('hl-selected');
+          }
+        }
+      });
+    }
+
+    // ---------- TEACHER MODEL FOR I DO ----------
+    function showModel(sectionKey) {
+      // for I DO, we’ll pre-highlight a main-idea chunk and an evidence chunk
+      clearHighlights(sectionKey);
+      var spans = document.querySelectorAll('.word[data-section="' + sectionKey + '"]');
+      modelIdsIdo = [];
+      // rough index ranges (based on p1 wording)
+      for (var i = 0; i < spans.length; i++) {
+        // main idea chunk: "students at Lincoln High gathered in the cafeteria, not for lunch, but for a meeting."
+        if (i >= 7 && i <= 25) {
+          spans[i].classList.add('highlight-main');
+          modelIdsIdo.push(spans[i]);
+        }
+        // one evidence chunk: "Many students had relatives who were worried about new immigration policies"
+        if (i >= 50 && i <= 70) {
+          spans[i].classList.add('highlight-evidence');
+          modelIdsIdo.push(spans[i]);
+        }
+      }
+    }
+
+    // ---------- QUESTIONS ----------
+    var questions = [
+      {
+        text: "1. What is the BEST statement of the central idea of the ENTIRE passage?",
+        choices: [
+          "Students at Lincoln High are afraid of immigration officers.",
+          "Students at Lincoln High use what they learn in class to take action and support immigrant families in their community.",
+          "Maya and Daniel do not agree about immigration policies at their school.",
+          "Teachers should not show articles about immigration in English class."
+        ],
+        correctIndex: 1,
+        explanation: "The passage shows students learning about immigration, analyzing texts, and then creating a “Know Your Rights” night to help families. That’s more than fear—it’s action."
+      },
+      {
+        text: "2. Which sentence from the passage BEST supports your answer to Question 1?",
+        choices: [
+          "“In the front row sat Maya, whose dad came from El Salvador, and Daniel, whose parents had been stopped by immigration officers the year before.”",
+          "“Some students had never heard about it.”",
+          "“Over the next week, the students read articles, watched interviews, and even analyzed speeches from local leaders.”",
+          "“The group designed posters for a school-wide ‘Know Your Rights’ night, where lawyers and community organizers would answer questions.”"
+        ],
+        correctIndex: 3,
+        explanation: "The “Know Your Rights” night shows students using their voices to organize real support for families, which matches the central idea of student action."
+      },
+      {
+        text: "3. In paragraph 2, what does the word “challenged” MOST nearly mean?",
+        choices: [
+          "accused them",
+          "dared and encouraged them to do something difficult",
+          "laughed at them",
+          "proved them wrong"
+        ],
+        correctIndex: 1,
+        explanation: "The teacher is not attacking them. She is pushing them to think and act, which fits “dared and encouraged them to do something difficult.”"
+      },
+      {
+        text: "4. Which inference about the students is BEST supported by the passage?",
+        choices: [
+          "They only care about projects that help them get extra credit.",
+          "They are unable to understand complex information about immigration.",
+          "They become more confident when they work together on something that matters to them.",
+          "They think school events should avoid serious topics."
+        ],
+        correctIndex: 2,
+        explanation: "The passage shows quiet students speaking up, translating, and helping plan the event. Working together on a meaningful project clearly builds their confidence."
+      }
+    ];
+
+    var currentQuestionIndex = 0;
+    var selectedChoiceIndex = null;
+    var totalPoints = 0;
+    var questionsCorrect = 0;
+    var questionAnswered = false;
+
+    function startQuestions() {
+      currentQuestionIndex = 0;
+      selectedChoiceIndex = null;
+      questionsCorrect = 0;
+      totalPoints = 0;
+      document.getElementById('score-display').textContent = totalPoints;
+      document.getElementById('score-display-2').textContent = totalPoints;
+      loadQuestion();
+      goToScreen('screen-questions');
+    }
+
+    function loadQuestion() {
+      var q = questions[currentQuestionIndex];
+      document.getElementById('q-number').textContent = currentQuestionIndex + 1;
+      document.getElementById('q-total').textContent = questions.length;
+      document.getElementById('q-text').textContent = q.text;
+      var choicesDiv = document.getElementById('q-choices');
+      choicesDiv.innerHTML = '';
+      selectedChoiceIndex = null;
+      questionAnswered = false;
+      document.getElementById('q-feedback').textContent = '';
+      document.getElementById('q-feedback').className = 'feedback';
+      document.getElementById('check-btn').textContent = 'Check Answer ✅';
+
+      q.choices.forEach(function(choice, idx) {
+        var btn = document.createElement('button');
+        btn.className = 'choice-btn';
+        btn.textContent = String.fromCharCode(65 + idx) + '. ' + choice;
+        btn.onclick = function() {
+          if (questionAnswered) return;
+          selectedChoiceIndex = idx;
+          var all = document.querySelectorAll('.choice-btn');
+          all.forEach(function(b) { b.classList.remove('selected'); });
+          btn.classList.add('selected');
+        };
+        choicesDiv.appendChild(btn);
+      });
+    }
+
+    function checkAnswer() {
+      if (questionAnswered) {
+        // move to next
+        currentQuestionIndex++;
+        if (currentQuestionIndex >= questions.length) {
+          showResults();
+        } else {
+          loadQuestion();
+        }
+        return;
+      }
+
+      if (selectedChoiceIndex === null) {
+        document.getElementById('q-feedback').textContent = 'Choose an answer first 🙂';
+        document.getElementById('q-feedback').className = 'feedback incorrect';
+        return;
+      }
+
+      var q = questions[currentQuestionIndex];
+      var feedback = document.getElementById('q-feedback');
+      if (selectedChoiceIndex === q.correctIndex) {
+        feedback.textContent = '✅ Correct! ' + q.explanation;
+        feedback.className = 'feedback correct';
+        questionsCorrect++;
+        totalPoints += 20;
+      } else {
+        feedback.textContent = '❌ Not quite. ' + q.explanation;
+        feedback.className = 'feedback incorrect';
+      }
+      document.getElementById('score-display-2').textContent = totalPoints;
+      questionAnswered = true;
+      document.getElementById('check-btn').textContent =
+        (currentQuestionIndex === questions.length - 1) ? 'See Results 🎉' : 'Next Question ➡';
+    }
+
+    function backFromQuestion() {
+      goToScreen('screen-youdo');
+    }
+
+    function showResults() {
+      goToScreen('screen-results');
+      var scoreText = questionsCorrect + ' / ' + questions.length;
+      document.getElementById('results-score').textContent = scoreText;
+      var percent = Math.round((questionsCorrect / questions.length) * 100);
+      var msg;
+      if (percent === 100) {
+        msg = "Perfect score! You read closely and chose strong evidence. 🔥";
+      } else if (percent >= 75) {
+        msg = "Great job! You’re very close. Review which answers you missed and think about the central idea again. 💡";
+      } else {
+        msg = "You’re getting started. The more you practice, the easier finding central idea will feel. Keep going. 🌱";
+      }
+      document.getElementById('results-text').textContent =
+        "You answered " + questionsCorrect + " out of " + questions.length +
+        " correctly (" + percent + "%) and earned " + totalPoints + " stars.";
+    }
+
+    function restartModule() {
+      totalPoints = 0;
+      questionsCorrect = 0;
+      document.getElementById('score-display').textContent = '0';
+      document.getElementById('score-display-2').textContent = '0';
+      goToScreen('screen-welcome');
+    }
+
+    // ---------- INIT ----------
+    window.onload = function() {
+      renderParagraph('passage-ido', p1, 'ido');
+      renderParagraph('passage-wedo', p2, 'wedo');
+      renderParagraph('passage-youdo', p3, 'youdo');
+      document.getElementById('score-display').textContent = totalPoints;
+      document.getElementById('score-display-2').textContent = totalPoints;
+    };
+  </script>
+</body>
+</html>
